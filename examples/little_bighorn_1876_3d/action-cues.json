@@ -1,0 +1,12 @@
+{
+  "sfx": {
+    "paperWave": 1.18,
+    "pocketsTurn": 3.88,
+    "gavelSlam": 5.56,
+    "kneelThud": 8.88,
+    "orderHandoff": 11.38,
+    "probationStamp": 12.38,
+    "cavalryStart": 14.42,
+    "playbookLift": 18.30
+  }
+}

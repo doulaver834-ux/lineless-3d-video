@@ -1,0 +1,8 @@
+/LOCAL.md
+/local.json
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+.bundle/
+.render-tmp/
