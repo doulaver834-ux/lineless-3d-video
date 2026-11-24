@@ -3,7 +3,7 @@ import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from
 import {WORDS} from './timeline';
 
 // Universal Historical / Narrative Editorial Typography:
-// - Clean documentary location datelines (NO classroom header, NO marble bust teacher, NO "F" grade!)
+// - Clean documentary location datelines
 // - Sparse diegetic editorial callouts synchronized to spoken turning points
 // - Semantic phrase captions with active word highlight
 

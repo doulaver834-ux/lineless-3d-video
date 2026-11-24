@@ -5,7 +5,7 @@ Master broadcast audio builder for the 19.80s Lineless 3D General Test:
 - Sparse, frame-locked physical Foley SFX ONLY (paper rustle, cloth pocket turn,
   walnut gavel slam, boot-kneel thud, crisp parchment handoff, subtle distant
   open-air cavalry leather/hoof rhythm on the Montana bluff)
-- Zero classroom bells, zero red-pen squeaks, zero synth music beds fighting the voice.
+- Clean voice-first mix normalized to -14 LUFS.
 """
 import json
 import math

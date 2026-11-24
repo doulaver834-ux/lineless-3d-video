@@ -196,17 +196,18 @@ export const COAT = {
 };
 
 export const KIT = {
-  custer: {
+  frontier_buckskin: {
     trim: 'fringe', coat: '#d9b377', coatSh: '#b48a52', shirt: '#23395d',
     pants: '#5878a0', pantsSh: '#3f5a7d', hat: '#ead9b0', hatSh: '#c9b384', band: '#6e4e32',
     skin: '#f0b98f', skinSh: '#d4946c', hair: '#e2a93b', hairSh: '#b57b1e',
     scarf: '#d8352a', scarfSh: '#a62219', boot: '#2e2328', bootSh: '#1e161a',
+    curls: true, stache: true,
   },
-  custer_dress: {
+  officer_dress: {
     trim: 'buttons', coat: '#243b63', coatSh: '#172744', shirt: '#f5efe4',
     pants: '#4c6d96', pantsSh: '#375275', hat: '#ead9b0', hatSh: '#c9b384', band: '#c9a23f',
-    skin: '#f0b98f', skinSh: '#d4946c', hair: '#e2a93b', hairSh: '#b57b1e',
-    scarf: '#d8352a', scarfSh: '#a62219', boot: '#241d22', bootSh: '#161115',
+    skin: '#f0b98f', skinSh: '#d4946c', hair: '#4a3324', hairSh: '#332116',
+    scarf: '#c9a23f', boot: '#241d22', bootSh: '#161115',
   },
   trooper: {
     trim: 'buttons', coat: '#34507e', coatSh: '#243a60', shirt: '#e6dfd3',
@@ -220,7 +221,7 @@ export const KIT = {
     skin: '#d4956a', skinSh: '#b3744c', hair: '#2a2024', hairSh: '#1a1417',
     scarf: '#b87638', boot: '#3b2b20', bootSh: '#291d15',
   },
-  plain: {
+  civilian_suit: {
     trim: 'suit', coat: '#8a6b52', coatSh: '#6a4f3c', shirt: '#f2ece0', tie: '#3b302a',
     pants: '#4a4652', pantsSh: '#35323b', hat: '#5a4636', hatSh: '#40301f', band: '#2e2328',
     skin: '#f0b98f', skinSh: '#d4946c', hair: '#4a3324', hairSh: '#332116',
@@ -250,25 +251,27 @@ export const KIT = {
     skin: '#e8ad84', skinSh: '#c98a64', hair: '#9e9892', hairSh: '#78736e',
     scarf: '#c9a23f', boot: '#211b20', bootSh: '#141014',
   },
-  grant: {
+  statesman_dark: {
     trim: 'suit', coat: '#262a36', coatSh: '#181b24', shirt: '#f7f4ec', tie: '#181a22',
     pants: '#323746', pantsSh: '#222632', hat: 'none', band: '#c9a23f',
     skin: '#e8ad84', skinSh: '#c98a64', hair: '#5c4230', hairSh: '#3f2c1f',
     boot: '#1c181c', bootSh: '#110e11',
+    beard: true,
   },
-  terry: {
+  general_coat: {
     trim: 'buttons', coat: '#243a5e', coatSh: '#172742', shirt: '#f4efe4',
     pants: '#4a668c', pantsSh: '#354c6b', hat: '#262530', hatSh: '#181720', band: '#c9a23f',
     skin: '#f0b98f', skinSh: '#d4946c', hair: '#9aa0ab', hairSh: '#737985',
     scarf: '#c9a23f', boot: '#211b20', bootSh: '#141014',
+    beard: true,
   },
-  reno: {
-    trim: 'buttons', coat: '#263f6b', coatSh: '#182b4d', shirt: '#f0eae0',
-    pants: '#5878a0', pantsSh: '#3f5a7d', hat: '#262530', hatSh: '#181720', band: '#c9a23f',
-    skin: '#e8ad84', skinSh: '#c98a64', hair: '#3b2b22', hairSh: '#261b15',
-    scarf: '#c9a23f', boot: '#221c21', bootSh: '#151115',
+  merchant_vest: {
+    trim: 'suit', coat: '#7896ab', coatSh: '#5a768a', shirt: '#f5efe4', tie: '#495c73',
+    pants: '#495c73', pantsSh: '#354457', hat: '#dfd0ab', hatSh: '#bfb088', band: '#5c4934',
+    skin: '#e8ad84', skinSh: '#c98a64', hair: '#4a3324', hairSh: '#332116',
+    boot: '#4a3828', bootSh: '#33261a',
   },
-  benteen: {
+  explorer_coat: {
     trim: 'buttons', coat: '#2b4470', coatSh: '#1c2f52', shirt: '#f0eae0',
     pants: '#5878a0', pantsSh: '#3f5a7d', hat: '#4a3a2c', hatSh: '#33271d', band: '#c9a23f',
     skin: '#f0b98f', skinSh: '#d4946c', hair: '#aeb3bd', hairSh: '#848a96',
@@ -1030,7 +1033,7 @@ function upper(o, k, ph, hx, hy) {
   g.rotate(o.tilt || 0);
   g.scale(1.42 * (1 - sq * 0.16), 1.42 * (1 + sq * 0.2));
 
-  if (o.curls || k.kit === 'custer' || k.kit === 'custer_dress') {
+  if (o.curls ?? k.curls) {
     if (isFront) {
       [
         [-46, -30, 24],
@@ -1128,7 +1131,7 @@ function upper(o, k, ph, hx, hy) {
     limb(35, ey - 21 - (skep ? 10 : br * 9), 58, ey - 20 + (skep ? -12 : br * 6), 4.4, 4.8, c('hair'));
   }
 
-  if (o.beard || k.kit === 'grant' || k.kit === 'terry') {
+  if (o.beard ?? k.beard) {
     if (isFront)
       blob(
         [
@@ -1260,7 +1263,7 @@ function upper(o, k, ph, hx, hy) {
     g.stroke();
   }
 
-  if (o.stache || k.kit === 'custer' || k.kit === 'custer_dress') {
+  if (o.stache ?? k.stache) {
     const lift = m === 'shout' || m === 'jaw' || m === 'grin' ? -4 : 0;
     limb(mx - 2, -27 + lift, mx - 30, -13 + lift * 0.5, 9.5, 3.8, c('hair'));
     limb(mx - 2, -27 + lift, mx + 28, -14 + lift * 0.5, 9.5, 3.8, c('hair'));

@@ -59,6 +59,9 @@ def main():
     for starter in ("timeline.ts", "Graphics.tsx", "Root.tsx", "index.tsx"):
         copy_if_missing(TEMPLATE_DIR / "src" / starter, proj / "src" / starter, force=False)
 
+    for prod_json in ("editorial-plates.json", "action-cues.json"):
+        copy_if_missing(TEMPLATE_DIR / "production" / prod_json, proj / "production" / prod_json, force=False)
+
     for scr in ("render.mjs", "audio.py"):
         copy_if_missing(TEMPLATE_DIR / "scripts" / scr, proj / "scripts" / scr, force=False)
 

@@ -14,9 +14,12 @@ const serveUrl = await bundle({
   enableCaching: false,
 });
 
+const idArg = process.argv.find((a) => a.startsWith('--id='));
+const compId = idArg ? idArg.slice('--id='.length) : 'LinelessGeneralTest';
+
 const opts = {
   serveUrl,
-  id: 'LinelessGeneralTest',
+  id: compId,
   chromiumOptions: {gl: 'angle'},
   timeoutInMilliseconds: 120000,
   onBrowserLog: (log) => {
@@ -29,22 +32,15 @@ fs.mkdirSync('out/stills', {recursive: true});
 
 if (process.argv.includes('--stills')) {
   const customArg = process.argv.find((a) => a.startsWith('--frames='));
+  const total = composition.durationInFrames;
   const checkFrames = customArg
     ? customArg
         .slice('--frames='.length)
         .split(',')
         .map((n) => Number(n.trim()))
         .filter((n) => Number.isFinite(n))
-    : [
-        38,  // S01 (1.27s): Congress OTS dolly onto Custer waving accusation papers
-        125, // S02 (4.17s): Congress 2-shot — Custer empty pockets + ZERO EVIDENCE
-        172, // S03 (5.73s): Executive Study — Grant slams gavel + COMMAND REVOKED + Custer recoils
-        278, // S04 (9.27s): Fort Lincoln Cabin true 3D OTS — kneeling teary Custer before open sunlit doorway
-        352, // S05 (11.73s): Fort Lincoln Cabin 2-shot — Custer starry recovery across table
-        386, // S05 (12.87s): ON PROBATION + Terry stern point
-        468, // S06 (15.60s): Montana 3D Bluff low tracking shot alongside mounted Custer
-        558, // S07 (18.60s): Montana 3D Crane pull-back reveal over river valley + 8-year-old playbook
-      ];
+    : Array.from({length: 8}, (_, i) => Math.min(total - 1, Math.round(((i + 0.5) / 8) * total)));
+
   for (const f of checkFrames) {
     const outPath = path.resolve(`out/stills/f_${String(f).padStart(4, '0')}.png`);
     await renderStill({...opts, composition, frame: f, output: outPath, scale: 0.75});
@@ -52,7 +48,8 @@ if (process.argv.includes('--stills')) {
   }
 } else {
   let last = -1;
-  const outputLocation = path.resolve('out/lineless_3d_general_test_2K.mp4');
+  const outArg = process.argv.find((a) => a.startsWith('--out='));
+  const outputLocation = path.resolve(outArg ? outArg.slice('--out='.length) : 'out/master_2K.mp4');
   await renderMedia({
     ...opts,
     composition,

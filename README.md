@@ -1,19 +1,15 @@
 # Lineless 3D Video (`lineless-3d-video`)
 
-Universal agent skill (Claude Code, Codex, Antigravity) for producing narrated historical, biographical, science, business, and documentary animation combining **Style 2 lineless colour-block 2D characters & cavalry** with **Three.js two-tone 3D architecture, terrain, real directional shadows, and thin-lens optical depth of field** (`2560×1440` 2K @ 30fps, `-14 LUFS`).
+Universal agent skill (Claude Code, Codex, Antigravity) for producing narrated historical, biographical, science, business, and documentary animation combining **Style 2 lineless colour-block 2D characters & riders** with **Three.js two-tone 3D architecture, terrain, real directional shadows, and thin-lens optical depth of field** (`2560×1440` 2K @ 30fps, `-14 LUFS`).
 
-Unlike channel-specific classroom formats, `lineless-3d-video` contains **no marble-bust teacher and no exam/red-pen grading gimmicks** — using clean documentary location datelines, sparse turning-point badges, semantic word-highlighted captions, and a modular library of **1,007 CC0 `.glb` 3D assets** automatically normalized and re-shaded into unified two-tone colour blocks.
-
-![8-Shot 2K Benchmark Overview](examples/little_bighorn_1876_3d/lineless_3d_8shots_overview.jpg)
-
-![2D Multiplane vs Lineless 3D Space Comparison](examples/little_bighorn_1876_3d/compare_montana_frame.jpg)
+![8-Shot 2K Benchmark Overview](examples/benchmark_1876_3d/lineless_3d_8shots_overview.jpg)
 
 ## Key Capabilities
 
-- **Authentic Style 2 Lineless 2D Cast in 3D Space** (`style2Rig.js` + `linelessCast.ts`): Rounded capsule heads, warm soft eyes, 20+ tailored two-tone outfits, sculpted cuff+thumb hands, 24 props, word-gated `speechOpen()` lip sync, full-length rear OTS figures, and side-view horses casting real 3D silhouette shadows (`customDepthMaterial`).
-- **Lineless Storybook 3D Worlds (`twoTone` Shader)**: Zero comic black outlines (`InkPass` off) so 3D architecture and terrain match lineless 2D characters seamlessly; real 3D window/doorway portals, warm-umber AO baseboard strips, volumetric sun shafts, and `LensBlur` shallow optical bokeh.
+- **Style 2 Lineless 2D Cast in 3D Space** (`style2Rig.js` + `linelessCast.ts`): Rounded capsule heads, warm soft eyes, universal two-tone wardrobe presets (statesmen, officers, scholars, merchants, artisans, explorers, soldiers, civilians), sculpted cuff+thumb hands, 24 props, word-gated `speechOpen()` lip sync, full-length rear OTS figures, and side-view horses casting real 3D silhouette shadows (`customDepthMaterial`).
+- **Lineless Storybook 3D Worlds (`twoTone` Shader)**: Unified two-tone surface shading without comic black outlines (`InkPass` off) so 3D architecture and terrain harmonize seamlessly with lineless 2D characters; real 3D window/doorway portals, warm-umber AO baseboard strips, volumetric sun shafts, and `LensBlur` shallow optical bokeh.
 - **1,007 Reusable CC0 `.glb` Assets + Auto-Normalizer** (`download_cc0_kits.py` + `glbAssetKit.ts`): Pulls 8 curated Kenney CC0 3D kits (`furniture`, `nature`, `fantasy-town`, `train`, `survival`, `castle`, `pirate`, `city-suburban`), indexes exact `[width, height, depth, minY]` bounds into `catalog.json`, grounds every model flush at `y = 0`, scales to real-world meter heights, and converts materials to `twoTone()` automatically.
-- **Narrated Timeline & Broadcast Mastering**: Bundled Gemini 3.8 Flash TTS (`Fenrir`, `compact-shortform-v3`), `mlx-whisper` word alignment (`words.py`), and frame-accurate Foley SFX mastering (`-14 LUFS`).
+- **Script Linting, Narrated Timeline & Broadcast Mastering**: Bundled pre-TTS visual script linter (`script_lint.py`), pause breather (`air.py`), Gemini 3.8 Flash TTS (`Fenrir`, `compact-shortform-v3`), `mlx-whisper` word alignment (`words.py`), data-driven documentary typography (`Graphics.tsx`), and `-14 LUFS` Foley SFX mastering (`audio.py`).
 
 ## Install
 
@@ -43,6 +39,6 @@ node scripts/render.mjs --stills
 node scripts/render.mjs
 ```
 
-See [SKILL.md](SKILL.md), [Architecture & Craft Rules](references/architecture-and-craft.md), and [3D GLB Asset Pipeline](references/assets-and-pipeline.md) for full details.
+See [SKILL.md](SKILL.md), [Script Guide](references/script.md), [Architecture & Craft Rules](references/architecture-and-craft.md), and [3D GLB Asset Pipeline](references/assets-and-pipeline.md) for full details.
 
 [MIT License](LICENSE) (3D asset downloader pulls CC0 1.0 Public Domain packs from Kenney.nl)

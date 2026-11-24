@@ -1,6 +1,6 @@
 # Benchmark Example: Little Bighorn Prelude (1876) — 19.80s 2K
 
-Accepted lookdev & spatial benchmark (`2026-11-24`, `2560×1440 @ 30fps`, `594` frames, `-14 LUFS`), demonstrating four universal historical 3D sets paired with authentic Style 2 lineless 2D characters and cavalry — with zero classroom, zero marble bust teacher, and zero exam/red-pen grading.
+Accepted lookdev & spatial benchmark (`2026-11-24`, `2560×1440 @ 30fps`, `594` frames, `-14 LUFS`), demonstrating four universal historical 3D sets paired with authentic Style 2 lineless 2D characters and cavalry, documentary location datelines, turning-point badges, and semantic word-highlighted captions.
 
 ## 7-Shot Breakdown (`0.00s – 19.80s`)
 

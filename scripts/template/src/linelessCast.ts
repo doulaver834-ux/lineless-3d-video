@@ -162,7 +162,7 @@ export interface LinelessActor {
   update: (t: number, cam: THREE.Camera, opts: ActorUpdateOpts) => void;
 }
 
-export function createStandingActor(defaultKit = 'custer'): LinelessActor {
+export function createStandingActor(defaultKit = 'statesman_dark'): LinelessActor {
   const CW = 1024;
   const CH = 1152;
   const FOOT_X = 512;
@@ -221,7 +221,7 @@ export function createStandingActor(defaultKit = 'custer'): LinelessActor {
   };
 }
 
-export function createMountedActor(defaultKit = 'custer', defaultCoat = 'sorrel'): LinelessActor {
+export function createMountedActor(defaultKit = 'trooper', defaultCoat = 'bay'): LinelessActor {
   const CW = 1408;
   const CH = 1280;
   const HOOF_X = 680;
