@@ -5,6 +5,7 @@ import {
   setStyle2Words,
   withStyle2Context,
   standing,
+  standingHug,
   mounted,
   EX,
   perform,
@@ -43,6 +44,7 @@ export interface Style2Pose {
   stache?: boolean;
   beard?: boolean;
   cigar?: boolean;
+  glasses?: boolean;
   hand?: [number, number];
   hand2?: [number, number];
   handKind?: 'open' | 'point' | 'fist' | 'beckon';
@@ -50,7 +52,6 @@ export interface Style2Pose {
   prop?: string;
   prop2?: string;
   ph?: number;
-  // Horse-specific fields
   coat?: string;
   blanket?: string;
   blaze?: boolean;
@@ -80,9 +81,9 @@ function makeContactShadowTexture(): THREE.CanvasTexture {
   cv.height = 128;
   const ctx = cv.getContext('2d')!;
   const grad = ctx.createRadialGradient(64, 64, 6, 64, 64, 60);
-  grad.addColorStop(0, 'rgba(20, 14, 24, 0.50)');
-  grad.addColorStop(0.55, 'rgba(20, 14, 24, 0.22)');
-  grad.addColorStop(1, 'rgba(20, 14, 24, 0.0)');
+  grad.addColorStop(0, 'rgba(20, 18, 26, 0.48)');
+  grad.addColorStop(0.55, 'rgba(20, 18, 26, 0.20)');
+  grad.addColorStop(1, 'rgba(20, 18, 26, 0.0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 128, 128);
   const tex = new THREE.CanvasTexture(cv);
@@ -91,7 +92,7 @@ function makeContactShadowTexture(): THREE.CanvasTexture {
 }
 
 let _sharedShadowTex: THREE.CanvasTexture | null = null;
-function getShadowTex() {
+function getShadowTex(): THREE.CanvasTexture {
   if (!_sharedShadowTex) _sharedShadowTex = makeContactShadowTexture();
   return _sharedShadowTex;
 }
@@ -110,13 +111,11 @@ function attachCardMesh(
   tex.minFilter = THREE.LinearMipmapLinearFilter;
   tex.magFilter = THREE.LinearFilter;
 
-  // Calibrated lineless Lambert + soft self-illumination so Style 2 skin & buckskin tones
-  // stay warm and clean in shadow while still catching 3D directional sunlight!
   const mat = new THREE.MeshLambertMaterial({
     map: tex,
-    emissive: new THREE.Color('#fffaf2'),
+    emissive: new THREE.Color('#fffcf7'),
     emissiveMap: tex,
-    emissiveIntensity: 0.30,
+    emissiveIntensity: 0.32,
     transparent: false,
     alphaTest: 0.18,
     side: THREE.DoubleSide,
@@ -168,8 +167,8 @@ export function createStandingActor(defaultKit = 'statesman_dark'): LinelessActo
   const FOOT_X = 512;
   const FOOT_Y = 1060;
   const RIG_SCALE = 1.48;
-  // 530 rig px * 1.48 = 784.4 canvas px -> 1.78m human height
-  const METER_PER_PX = 1.78 / (530 * RIG_SCALE);
+  // 530 rig px * 1.48 = 784.4 canvas px -> 1.76m human height
+  const METER_PER_PX = 1.76 / (530 * RIG_SCALE);
   const PLANE_W = CW * METER_PER_PX;
   const PLANE_H = CH * METER_PER_PX;
   const OFFSET_Y = (FOOT_Y - CH * 0.5) * METER_PER_PX;
@@ -221,13 +220,69 @@ export function createStandingActor(defaultKit = 'statesman_dark'): LinelessActo
   };
 }
 
+export function createHugActor(kitA = 'exec_founder', kitB = 'modern_tee_woman'): LinelessActor {
+  const CW = 1280;
+  const CH = 1152;
+  const FOOT_X = 640;
+  const FOOT_Y = 1052;
+  const RIG_SCALE = 1.48;
+  const METER_PER_PX = 1.76 / (530 * RIG_SCALE);
+  const PLANE_W = CW * METER_PER_PX;
+  const PLANE_H = CH * METER_PER_PX;
+  const OFFSET_Y = (FOOT_Y - CH * 0.5) * METER_PER_PX;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = CW;
+  canvas.height = CH;
+  const ctx = canvas.getContext('2d')!;
+
+  const {root, card, tex, contactShadow, shadowMat} = attachCardMesh(
+    canvas,
+    PLANE_W,
+    PLANE_H,
+    OFFSET_Y,
+    0.58,
+    0.34
+  );
+
+  return {
+    root,
+    card,
+    update(t, cam, opts) {
+      root.visible = opts.visible;
+      if (!opts.visible) return;
+      const [px, py, pz] = opts.pos || [0, 0, 0];
+      root.position.set(px, py, pz);
+      root.scale.setScalar(opts.scale ?? 1);
+
+      if (opts.yawMode === 'fixed') {
+        card.rotation.y = opts.fixedYaw ?? 0;
+      } else {
+        const dx = cam.position.x - px;
+        const dz = cam.position.z - pz;
+        card.rotation.y = Math.atan2(dx, dz);
+      }
+
+      const shOp = opts.groundShadowOpacity ?? 0.44;
+      contactShadow.visible = shOp > 0.01;
+      shadowMat.opacity = shOp;
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, CW, CH);
+      withStyle2Context(ctx, t, opts.tint ?? null, () => {
+        standingHug(FOOT_X, FOOT_Y, RIG_SCALE, t, kitA, kitB);
+      });
+      tex.needsUpdate = true;
+    },
+  };
+}
+
 export function createMountedActor(defaultKit = 'trooper', defaultCoat = 'bay'): LinelessActor {
   const CW = 1408;
   const CH = 1280;
   const HOOF_X = 680;
   const HOOF_Y = 1160;
   const RIG_SCALE = 1.36;
-  // 650 rig px * 1.36 = 884 canvas px -> 2.52m mounted cavalry height
   const METER_PER_PX = 2.52 / (650 * RIG_SCALE);
   const PLANE_W = CW * METER_PER_PX;
   const PLANE_H = CH * METER_PER_PX;

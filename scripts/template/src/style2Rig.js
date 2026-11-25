@@ -158,6 +158,14 @@ function at(x, y, s, fn, rot = 0, flip = false) {
 
 // ---- Word-exact lip-sync gate -------------------------------------------
 let _WORDS = [];
+// Brand accent used by lanyards/badges (kit.badge), 'day1_badge', 'pc_box' and 'protest_sign'.
+let ACCENT = '#3f8fd0';
+let ACCENT_SH = '#2c6ea6';
+export function setStyle2Accent(base, shade) {
+  ACCENT = base;
+  ACCENT_SH = shade || grey(base, 0.72);
+}
+
 export function setStyle2Words(arr) {
   _WORDS = Array.isArray(arr) ? arr : [];
 }
@@ -276,6 +284,99 @@ export const KIT = {
     pants: '#5878a0', pantsSh: '#3f5a7d', hat: '#4a3a2c', hatSh: '#33271d', band: '#c9a23f',
     skin: '#f0b98f', skinSh: '#d4946c', hair: '#aeb3bd', hairSh: '#848a96',
     scarf: '#3f5a7d', boot: '#221c21', bootSh: '#151115',
+  },
+  // ---- Modern Office / Tech Campus Cast Kits ------------------------------
+  exec_founder: {
+    trim: 'zip_jacket', coat: '#202b42', coatSh: '#141c2e', shirt: '#1a1d24',
+    pants: '#191b22', pantsSh: '#111318', hat: 'none',
+    skin: '#eeb892', skinSh: '#d1956e', hair: '#e6eaef', hairSh: '#b8c0cd',
+    boot: '#1e2028', bootSh: '#13151b',
+    hairStyle: 'swept_silver', glasses: true, halfRim: true, whiteSole: true, silverBuckle: true, modernBelt: true,
+  },
+  modern_fleece: {
+    trim: 'zip_jacket', coat: '#2d323c', coatSh: '#1e222a', shirt: '#f2f0ea',
+    pants: '#45648a', pantsSh: '#314968', hat: 'none',
+    skin: '#e2a67d', skinSh: '#c2855e', hair: '#262126', hairSh: '#181418',
+    boot: '#f0eee8', bootSh: '#cfc9be',
+    badge: true, modernBelt: true,
+  },
+  modern_vest: {
+    trim: 'vest', coat: '#2c3038', coatSh: '#1d2026', sleeve: '#f4f2ec', shirt: '#f4f2ec',
+    pants: '#4a505c', pantsSh: '#353a44', hat: 'none',
+    skin: '#f0be98', skinSh: '#d29b75', hair: '#2a2428', hairSh: '#191518',
+    boot: '#3c4048', bootSh: '#282b32',
+    glasses: true, badge: true, whiteSole: true, modernBelt: true,
+  },
+  modern_red_hoodie: {
+    trim: 'hoodie', coat: '#a62c32', coatSh: '#7d1e24', shirt: '#23262e',
+    pants: '#4c6b91', pantsSh: '#364f6e', hat: 'none',
+    skin: '#dfa37a', skinSh: '#be825b', hair: '#241f24', hairSh: '#161316',
+    boot: '#e8e5dc', bootSh: '#c8c3b6',
+    glasses: true, badge: true, modernBelt: true,
+  },
+  modern_tee: {
+    trim: 'tee', coat: '#282c34', coatSh: '#1b1e24', shirt: '#282c34',
+    pants: '#7c7d63', pantsSh: '#5d5e48', hat: 'none',
+    skin: '#cf926b', skinSh: '#ad724d', hair: '#221d22', hairSh: '#141114',
+    boot: '#24262c', bootSh: '#17181d',
+    glasses: true, badge: true, modernBelt: true,
+  },
+  modern_woman_jacket: {
+    trim: 'zip_jacket', coat: '#252932', coatSh: '#181b22', shirt: '#3a404d',
+    pants: '#1e2128', pantsSh: '#14161b', hat: 'none',
+    skin: '#f2c29e', skinSh: '#d49f7a', hair: '#6b4730', hairSh: '#4d311f',
+    boot: '#202228', bootSh: '#14151a',
+    hairStyle: 'long', badge: true, modernBelt: true,
+  },
+  modern_hoodie: {
+    trim: 'hoodie', coat: '#465264', coatSh: '#313a48', shirt: '#e8e6de',
+    pants: '#2c303a', pantsSh: '#1e2128', hat: 'none',
+    skin: '#ebb48d', skinSh: '#cc936c', hair: '#3d2b20', hairSh: '#291c14',
+    boot: '#ece9e0', bootSh: '#cac5b8',
+    badge: true, modernBelt: true,
+  },
+  modern_navy_jacket: {
+    trim: 'zip_jacket', coat: '#324668', coatSh: '#22314b', shirt: '#22252d',
+    pants: '#7a756c', pantsSh: '#5c5850', hat: 'none',
+    skin: '#f0be98', skinSh: '#d19b74', hair: '#2b2428', hairSh: '#1a1518',
+    boot: '#2a2d34', bootSh: '#1b1d22',
+    glasses: true, badge: true, whiteSole: true, modernBelt: true,
+  },
+  modern_it_vest: {
+    trim: 'vest', coat: '#253329', coatSh: '#18221b', sleeve: '#eef2ec', shirt: '#eef2ec',
+    pants: '#363b45', pantsSh: '#252930', hat: 'none',
+    skin: '#eeb892', skinSh: '#cf956e', hair: '#3a291f', hairSh: '#261a13',
+    boot: '#262930', bootSh: '#181a1f',
+    glasses: true, badge: true, whiteSole: true, modernBelt: true,
+  },
+  modern_tee_woman: {
+    trim: 'tee', coat: '#23262e', coatSh: '#16181e', shirt: '#23262e',
+    pants: '#1c1e25', pantsSh: '#121419', hat: 'none',
+    skin: '#f5c7a4', skinSh: '#d7a27d', hair: '#d2ad6d', hairSh: '#aa8548',
+    boot: '#22252c', bootSh: '#15171c',
+    modernBelt: true,
+  },
+  // ---- Executive Boardroom Cast Kits --------------------------------------
+  board_chair: {
+    trim: 'suit', coat: '#242834', coatSh: '#171a22', shirt: '#f6f3eb', tie: '#8c2828',
+    pants: '#202430', pantsSh: '#151820', hat: 'none',
+    skin: '#f0b98f', skinSh: '#d4946c', hair: '#b8bec9', hairSh: '#8d94a2',
+    boot: '#181a20', bootSh: '#101216',
+    glasses: true, modernBelt: true,
+  },
+  board_suit: {
+    trim: 'suit', coat: '#363b48', coatSh: '#252933', shirt: '#f4f1e8', tie: '#2c486e',
+    pants: '#2e323d', pantsSh: '#1f222a', hat: 'none',
+    skin: '#e6a982', skinSh: '#c58762', hair: '#4a382b', hairSh: '#33251c',
+    boot: '#1c1e24', bootSh: '#121318',
+    modernBelt: true,
+  },
+  board_woman: {
+    trim: 'suit', coat: '#4a3540', coatSh: '#33232c', shirt: '#f7f3eb', tie: '#4a3540',
+    pants: '#2b2832', pantsSh: '#1d1b22', hat: 'none',
+    skin: '#f2c29e', skinSh: '#d49f7a', hair: '#2c2226', hairSh: '#1a1417',
+    boot: '#1e1c24', bootSh: '#131118',
+    hairStyle: 'long', modernBelt: true,
   },
 };
 
@@ -796,6 +897,83 @@ function drawProp(kind, ph = 0) {
       C('#f4efe4')
     );
     rr(5, -236, 42, 36, 2, C('#243b63'));
+  } else if (kind === 'phone_rec') {
+    g.rotate(-0.08);
+    rr(-16, -42, 32, 58, 6, C('#1b1e26'));
+    rr(-13, -37, 26, 48, 4, C('#8cd4e8'));
+    ell(0, -28, 4, 4, C('#e03b32'));
+  } else if (kind === 'laptop_open') {
+    g.rotate(-0.06);
+    rr(-54, -4, 108, 9, 3, C('#505664'));
+    poly(
+      [
+        [-48, -4],
+        [-58, -68],
+        [40, -68],
+        [48, -4],
+      ],
+      C('#262a33')
+    );
+    ell(-6, -36, 8, 8, C('#aeb6c4'));
+  } else if (kind === 'pc_box') {
+    g.rotate(-0.04);
+    form(
+      () => g.roundRect(-66, -54, 132, 98, 6),
+      C('#c99e67'),
+      () => {
+        g.fillStyle = C('#a87e4b');
+        g.fillRect(-66, -54, 42, 98);
+      }
+    );
+    rr(-66, -12, 132, 12, 0, C(ACCENT));
+    rr(-44, 10, 88, 22, 3, C('#faf6ec'));
+    rr(-34, 17, 68, 6, 2, C('#282c34'));
+  } else if (kind === 'day1_badge') {
+    limb(0, -10, 0, 26, 3.5, 3.5, C(ACCENT));
+    rr(-24, 22, 48, 62, 5, C('#fbf9f2'));
+    rr(-24, 22, 48, 16, 4, C(ACCENT));
+    ell(0, 50, 9, 9, C('#202b42'));
+    rr(-15, 66, 30, 6, 2, C('#282c34'));
+  } else if (kind === 'resignation_folder') {
+    // Crimson-burgundy executive dossier folder (#8c242b / #66181e) with cream page edge & gold seal tab
+    g.rotate(-0.12 + Math.sin(ph * 2.4) * 0.025);
+    rr(-42, -44, 38, 12, [4, 4, 0, 0], C('#66181e'));
+    rr(-38, -38, 84, 66, 3, C('#faf5e8'));
+    rr(38, -36, 8, 62, 2, C('#dfd6c3'));
+    form(
+      () => g.roundRect(-44, -34, 86, 68, 5),
+      C('#8c242b'),
+      () => {
+        g.fillStyle = C('#66181e');
+        g.fillRect(-44, -34, 24, 68);
+        g.fillRect(-44, 18, 86, 18);
+      }
+    );
+    rr(-24, -18, 48, 13, 2.5, C('#faf5e8'));
+    rr(-18, -13, 36, 4, 1.5, C('#242834'));
+    rr(25, -2, 19, 11, 2.5, C(GOLD));
+    ell(14, 10, 8.5, 8.5, C(GOLD));
+    ell(14, 10, 4.8, 4.8, C(GOLD_SH));
+  } else if (kind === 'protest_sign') {
+    // Handheld employee rally placard on short wooden stick (#fbf8f0 card, ACCENT top band, clean dark bars)
+    g.rotate(-0.05 + Math.sin(ph * 3.6) * 0.045);
+    limb(0, 46, 0, -142, 5.4, 4.8, C('#c48f5a'));
+    limb(-2.2, 46, -2.2, -142, 2.4, 2.2, C('#916337'));
+    rr(-70, -194, 140, 94, 6, C('#d6cfc0'));
+    form(
+      () => g.roundRect(-68, -196, 136, 92, 6),
+      C('#fbf8f0'),
+      () => {
+        g.fillStyle = C('#eae3d2');
+        g.fillRect(-68, -124, 136, 22);
+      }
+    );
+    rr(-68, -196, 136, 24, [6, 6, 0, 0], C(ACCENT));
+    rr(-68, -196, 36, 24, [6, 0, 0, 0], C(ACCENT_SH));
+    rr(-22, -187, 44, 6, 2.5, C('#fbf8f0'));
+    rr(-48, -158, 96, 11, 3, C('#202632'));
+    rr(-36, -139, 72, 8, 2.5, C('#3a4252'));
+    rr(-24, -122, 48, 5, 2, C(ACCENT));
   }
   g.restore();
 }
@@ -811,7 +989,14 @@ function upper(o, k, ph, hx, hy) {
   g.translate(shv, 0);
   if (sq) g.scale(1 - sq * 0.35, 1 + sq * 0.45);
 
-  const cuffCol = k.trim === 'suit' || k.trim === 'apron' ? '#f5efe4' : cus ? '#ead9b0' : GOLD;
+  const cuffCol =
+    k.trim === 'suit' || k.trim === 'apron'
+      ? k.shirt || '#f5efe4'
+      : k.modernBelt
+        ? k.sleeve || k.coat
+        : cus
+          ? '#ead9b0'
+          : GOLD;
 
   const drawArm = (sx, sy, tx, ty, sleeveC, handKind, propKind, bendDir, castShadow) => {
     let effSx = sx,
@@ -825,6 +1010,7 @@ function upper(o, k, ph, hx, hy) {
       propKind === 'note' ||
       propKind === 'blank_paper' ||
       propKind === 'dossier' ||
+      propKind === 'resignation_folder' ||
       propKind === 'sealed_order' ||
       propKind === 'probation' ||
       propKind === 'playbook';
@@ -857,11 +1043,13 @@ function upper(o, k, ph, hx, hy) {
       limb(ex + 5, ey + 8, fx + 5, fy + 8, 17, 14, '#16101e');
       g.restore();
     }
-    limb(effSx, effSy + 2, ex, ey + 2, 21.5, 17, C(k.coatSh));
-    limb(effSx, effSy, ex, ey, 20.5, 16, C(sleeveC));
+    const sleeveBase = k.sleeve || sleeveC;
+    const sleeveSh = k.sleeve ? mix(k.sleeve, '#1c2028', 0.16) : k.coatSh;
+    limb(effSx, effSy + 2, ex, ey + 2, 21.5, 17, C(sleeveSh));
+    limb(effSx, effSy, ex, ey, 20.5, 16, C(sleeveBase));
     if (cus) fringe(ex, ey, fx, fy, 5, 13, c('coatSh'));
-    limb(ex, ey + 1.5, fx, fy + 1.5, 17, 14, C(k.coatSh));
-    limb(ex, ey, fx, fy, 16, 13, C(sleeveC));
+    limb(ex, ey + 1.5, fx, fy + 1.5, 17, 14, C(sleeveSh));
+    limb(ex, ey, fx, fy, 16, 13, C(sleeveBase));
     const ang = Math.atan2(fy - ey, fx - ex);
     limb(fx - Math.cos(ang) * 7, fy - Math.sin(ang) * 7, fx, fy, 15, 14.5, C(cuffCol));
     if (propKind) at(fx, fy, 1, () => drawProp(propKind, ph));
@@ -984,10 +1172,53 @@ function upper(o, k, ph, hx, hy) {
       ],
       C(mix(k.coat, '#141018', 0.2))
     );
+  } else if (k.trim === 'zip_jacket' || k.trim === 'vest') {
+    poly(
+      [
+        [cx - 16, -148],
+        [cx + 16, -148],
+        [cx + 13, -14],
+        [cx - 13, -14],
+      ],
+      C(k.shirt || '#1a1d24')
+    );
+    limb(cx - 14, -144, cx - 12, -14, 2.2, 2.2, C('#7d8799'));
+    poly(
+      [
+        [cx - 16, -148],
+        [cx - 38, -124],
+        [cx - 22, -116],
+      ],
+      c('coatSh')
+    );
+    poly(
+      [
+        [cx + 16, -148],
+        [cx + 38, -124],
+        [cx + 22, -116],
+      ],
+      c('coat')
+    );
+  } else if (k.trim === 'hoodie') {
+    ell(cx, -144, 26, 12, c('coatSh'));
+    limb(cx - 9, -138, cx - 9, -104, 2.5, 2.5, C('#ece9e0'));
+    limb(cx + 9, -138, cx + 9, -104, 2.5, 2.5, C('#ece9e0'));
   }
 
-  rr(-51, -18, 104, 14, 4, C(INK));
-  rr(cx - 8, -20, 17, 18, 3, C(GOLD));
+  if (k.badge) {
+    limb(cx - 14, -144, cx - 2, -88, 3.2, 3.2, C(ACCENT));
+    limb(cx + 14, -144, cx + 2, -88, 3.2, 3.2, C(ACCENT));
+    rr(cx - 11, -88, 22, 30, 3, C('#faf8f2'));
+    rr(cx - 11, -88, 22, 8, 2, C(ACCENT));
+  }
+
+  if (k.modernBelt) {
+    rr(-49, -16, 98, 11, 4, C('#161820'));
+    if (k.silverBuckle) rr(cx - 6, -17, 13, 13, 2.5, C('#aeb6c4'));
+  } else {
+    rr(-51, -18, 104, 14, 4, C(INK));
+    rr(cx - 8, -20, 17, 18, 3, C(GOLD));
+  }
 
   if (o.emptyPockets > 0.05) {
     const pk = o.emptyPockets;
@@ -1123,12 +1354,50 @@ function upper(o, k, ph, hx, hy) {
   }
 
   const skep = o.eyes === 'skeptical';
+  const browCol = k.hairStyle === 'swept_silver' ? C('#7d8594') : c('hair');
   if (isFront) {
-    limb(-32, ey - 19 + br * 6, -8, ey - 21 - br * 9, 4.6, 5.0, c('hair'));
-    limb(32, ey - 19 + br * 6, 8, ey - 21 - br * 9, 4.6, 5.0, c('hair'));
+    limb(-32, ey - 19 + br * 6, -8, ey - 21 - br * 9, 4.6, 5.0, browCol);
+    limb(32, ey - 19 + br * 6, 8, ey - 21 - br * 9, 4.6, 5.0, browCol);
   } else {
-    limb(5, ey - 20 + (skep ? 4 : br * 6), 29, ey - 21 - (skep ? -6 : br * 9), 4.8, 4.4, c('hair'));
-    limb(35, ey - 21 - (skep ? 10 : br * 9), 58, ey - 20 + (skep ? -12 : br * 6), 4.4, 4.8, c('hair'));
+    limb(5, ey - 20 + (skep ? 4 : br * 6), 29, ey - 21 - (skep ? -6 : br * 9), 4.8, 4.4, browCol);
+    limb(35, ey - 21 - (skep ? 10 : br * 9), 58, ey - 20 + (skep ? -12 : br * 6), 4.4, 4.8, browCol);
+  }
+
+  // Modern Eyeglasses (gunmetal half-rim frames via kit.halfRim, or full-rim)
+  if (o.glasses ?? k.glasses) {
+    const gc = C('#2a303c');
+    g.save();
+    g.strokeStyle = gc;
+    g.lineWidth = k.halfRim ? 2.6 : 2.3;
+    if (isFront) {
+      g.beginPath();
+      g.roundRect(-33, ey - 8, 28, 19, 5);
+      g.stroke();
+      g.beginPath();
+      g.roundRect(5, ey - 8, 28, 19, 5);
+      g.stroke();
+      limb(-5, ey - 2, 5, ey - 2, 2.4, 2.4, gc);
+      limb(-49, ey - 2, -33, ey - 2, 2.2, 2.2, gc);
+      limb(33, ey - 2, 49, ey - 2, 2.2, 2.2, gc);
+      if (k.halfRim) {
+        rr(-34, ey - 9.5, 30, 3.6, 1.5, gc);
+        rr(4, ey - 9.5, 30, 3.6, 1.5, gc);
+      }
+    } else {
+      g.beginPath();
+      g.roundRect(6, ey - 8, 26, 19, 5);
+      g.stroke();
+      g.beginPath();
+      g.roundRect(35, ey - 8, 21, 19, 5);
+      g.stroke();
+      limb(32, ey - 2, 35, ey - 2, 2.4, 2.4, gc);
+      limb(-6, ey - 2, 6, ey - 1, 2.2, 2.2, gc);
+      if (k.halfRim) {
+        rr(5, ey - 9.5, 28, 3.6, 1.5, gc);
+        rr(34, ey - 9.5, 23, 3.6, 1.5, gc);
+      }
+    }
+    g.restore();
   }
 
   if (o.beard ?? k.beard) {
@@ -1174,8 +1443,18 @@ function upper(o, k, ph, hx, hy) {
       g.lineCap = 'round';
       g.stroke();
     } else {
-      const oh = m === 'talk' ? 3.5 + gate * 9.5 : 11;
-      ell(mx, -10, 9.5, oh, mc);
+      const oh = m === 'talk' ? 4.2 + gate * 8.6 : 10.5;
+      form(
+        () => g.roundRect(mx - 12, -17, 24, oh + 6, 7),
+        mc,
+        () => {
+          if (oh > 5.8) {
+            g.fillStyle = teeth;
+            g.fillRect(mx - 12, -17, 24, 4.6);
+          }
+          ell(mx, -10 + oh, 8.5, 4.6, tongue);
+        }
+      );
     }
   } else if (m === 'plead') {
     g.beginPath();
@@ -1295,15 +1574,96 @@ function upper(o, k, ph, hx, hy) {
     g.globalAlpha = 1;
   }
 
-  // Hats
+  // Hats & Signature Hair Crowns
   g.save();
   g.translate(0, -(o.hatLift || 0));
   const hatType = o.hat || (k.hat === 'none' ? 'none' : 'slouch');
   if (hatType === 'none') {
-    g.beginPath();
-    g.roundRect(-50, -110, 104, 42, [50, 50, 6, 6]);
-    g.fillStyle = c('hair');
-    g.fill();
+    if (k.hairStyle === 'swept_silver') {
+      if (isFront) {
+        form(
+          () => {
+            curve(
+              [
+                [-53, -72],
+                [-50, -108],
+                [-16, -120],
+                [24, -118],
+                [52, -104],
+                [53, -72],
+                [44, -84],
+                [12, -93],
+                [-28, -91],
+                [-45, -82],
+              ],
+              true
+            );
+          },
+          c('hair'),
+          () => {
+            poly(
+              [
+                [-56, -122],
+                [-14, -122],
+                [-22, -70],
+                [-56, -70],
+              ],
+              c('hairSh')
+            );
+          }
+        );
+        rr(-52, -76, 9, 26, 4, c('hairSh'));
+        rr(43, -76, 9, 26, 4, c('hair'));
+      } else {
+        form(
+          () => {
+            curve(
+              [
+                [-48, -62],
+                [-48, -104],
+                [-12, -120],
+                [32, -116],
+                [52, -96],
+                [42, -84],
+                [10, -92],
+                [-22, -84],
+                [-34, -62],
+              ],
+              true
+            );
+          },
+          c('hair'),
+          () => {
+            poly(
+              [
+                [-52, -122],
+                [-4, -122],
+                [-14, -58],
+                [-52, -58],
+              ],
+              c('hairSh')
+            );
+          }
+        );
+        rr(-16, -76, 11, 28, 5, c('hairSh'));
+      }
+    } else if (k.hairStyle === 'long') {
+      g.beginPath();
+      g.roundRect(-51, -110, 104, 40, [48, 48, 6, 6]);
+      g.fillStyle = c('hair');
+      g.fill();
+      if (isFront) {
+        rr(-54, -84, 15, 76, 7, c('hairSh'));
+        rr(39, -84, 15, 76, 7, c('hair'));
+      } else {
+        rr(-46, -84, 26, 78, 10, c('hair'));
+      }
+    } else {
+      g.beginPath();
+      g.roundRect(-50, -110, 104, 42, [50, 50, 6, 6]);
+      g.fillStyle = c('hair');
+      g.fill();
+    }
   } else if (hatType === 'kepi') {
     form(
       () => g.roundRect(-42, -128, 84, 50, [10, 16, 4, 4]),
@@ -1335,8 +1695,10 @@ function upper(o, k, ph, hx, hy) {
   let retHand;
   if (isFront) {
     const h2 = o.hand2 || [-68, -4];
-    drawArm(-50, -122, h2[0], h2[1], k.coatSh, o.hand2Kind, o.prop2, -1, true);
-    retHand = drawArm(50, -122, hx, hy, k.coat, o.handKind, o.prop, 1, true);
+    const leftBend = h2[1] < -122 ? -1 : 1;
+    const rightBend = hy < -122 ? 1 : -1;
+    drawArm(-50, -122, h2[0], h2[1], k.coatSh, o.hand2Kind, o.prop2, leftBend, true);
+    retHand = drawArm(50, -122, hx, hy, k.coat, o.handKind, o.prop, rightBend, true);
   } else {
     retHand = drawArm(12, -120, hx, hy, k.coat, o.handKind, o.prop, 1, true);
   }
@@ -1346,7 +1708,7 @@ function upper(o, k, ph, hx, hy) {
 }
 
 // ---- Person (Side, Front, and Full-Length True Rear OTS) ----------------
-function footLeg(hx, ph, walk, pants, boot, a1Off = 0, bendOff = 0, toeDir = 28) {
+function footLeg(hx, ph, walk, pants, boot, a1Off = 0, bendOff = 0, toeDir = 28, whiteSole = false, silverBuckle = false) {
   const a = Math.sin(ph) * 0.42 * walk + a1Off;
   const bend = Math.max(0, Math.cos(ph)) * 0.68 * walk + bendOff;
   const kx = hx + Math.sin(a) * 86,
@@ -1357,6 +1719,13 @@ function footLeg(hx, ph, walk, pants, boot, a1Off = 0, bendOff = 0, toeDir = 28)
   limb(kx, ky, fx, fy, 21, 17, pants);
   limb(lerp(kx, fx, 0.48), lerp(ky, fy, 0.48), fx, fy, 19, 17.5, boot);
   limb(fx - 3, fy + 2, fx + toeDir, fy + 3, 13.5, 10, boot);
+  if (whiteSole) {
+    limb(fx - 5, fy + 10, fx + toeDir, fy + 10.5, 4.2, 3.8, C('#f4f2ec'));
+  }
+  if (silverBuckle) {
+    const sgn = toeDir >= 0 ? 1 : -1;
+    rr(fx + sgn * 6 - 5, fy - 5, 10, 5, 1.5, C('#cfd6e2'));
+  }
 }
 
 function standingBack(x, y, s, o = {}) {
@@ -1400,7 +1769,7 @@ function standingBack(x, y, s, o = {}) {
       }
     );
     limb(0, -106, 0, 106, 2.5, 2.5, C(mix(k.coatSh, '#120e18', 0.28)));
-    rr(-34, -118, 68, 12, 5, C('#ece6da'));
+    rr(-34, -118, 68, 12, 5, C(k.modernBelt ? k.coatSh : '#ece6da'));
     if (k.trim === 'buttons') {
       rr(-78, -98, 36, 11, 4, C(GOLD_SH));
       rr(42, -98, 36, 11, 4, C(GOLD));
@@ -1508,11 +1877,11 @@ function person(o, seedX = 0) {
     footLeg(-10, 0, 0, farPants, farBoot, -0.24 + kneeSw, 0.34);
     footLeg(12, 0, 0, c('pants'), c('boot'), 0.5 - kneeSw, 0.24);
   } else if (isFront) {
-    footLeg(-19, ph + Math.PI, walk, farPants, farBoot, -0.04, 0, -16);
-    footLeg(19, ph, walk, c('pants'), c('boot'), 0.04, 0, 16);
+    footLeg(-19, ph + Math.PI, walk, farPants, farBoot, -0.04, 0, -16, k.whiteSole, k.silverBuckle);
+    footLeg(19, ph, walk, c('pants'), c('boot'), 0.04, 0, 16, k.whiteSole, k.silverBuckle);
   } else {
-    footLeg(-7, ph + Math.PI, walk, farPants, farBoot, kneeSw, 0, 28);
-    footLeg(9, ph, walk, c('pants'), c('boot'), -kneeSw, 0, 28);
+    footLeg(-7, ph + Math.PI, walk, farPants, farBoot, kneeSw, 0, 28, k.whiteSole, k.silverBuckle);
+    footLeg(9, ph, walk, c('pants'), c('boot'), -kneeSw, 0, 28, k.whiteSole, k.silverBuckle);
   }
 
   g.rotate((o.lean || 0) + stLean + Math.sin(ph * 0.8) * 0.016);
@@ -1534,6 +1903,223 @@ export function standing(x, y, s, o = {}, flip = false) {
     r = person(o, x);
   }, 0, flip);
   return r;
+}
+
+/**
+ * Two-person standing embrace with matched Style 2 head scale (~1.32-1.40x) and full-length proportions.
+ * Person A (kitA, default 'exec_founder') stands slightly right-rear, eyes closed and smiling over B's shoulder;
+ * Person B (kitB, default 'modern_tee_woman') stands closer foreground-left, rear 3/4 view with a low bun,
+ * both arms wrapping A while A's two sleeves wrap across B's upper back. Colours come from the two kits.
+ */
+export function standingHug(x, y, s, t = _T, kitA = 'exec_founder', kitB = 'modern_tee_woman') {
+  const kA = KIT[kitA] || KIT.exec_founder;
+  const kB = KIT[kitB] || KIT.modern_tee_woman;
+  const sway = Math.sin(t * 2.0) * 0.018;
+  const pat = Math.sin(t * 4.8) * 3.5;
+
+  at(x, y, s, () => {
+    g.save();
+    g.rotate(sway);
+
+    // 1. Person A legs & shoes (slightly right-rear)
+    g.save();
+    g.translate(26, -HIP);
+    footLeg(-16, 0, 0, C(kA.pantsSh), C(kA.bootSh), -0.03, 0, -12, !!kA.whiteSole, !!kA.silverBuckle);
+    footLeg(22, 0, 0, C(kA.pants), C(kA.boot), 0.05, 0, 22, !!kA.whiteSole, !!kA.silverBuckle);
+
+    // Person A jacket torso
+    form(
+      () =>
+        curve(
+          [
+            [-54, -140],
+            [0, -154],
+            [58, -140],
+            [52, 16],
+            [-48, 16],
+          ],
+          true
+        ),
+      C(kA.coat),
+      () => {
+        g.fillStyle = C(kA.coatSh);
+        g.fillRect(-58, -156, 48, 174);
+      }
+    );
+
+    // Person A 1.40x Style 2 head tilted inward, eyes closed, smiling
+    rr(-12, -166, 28, 24, 6, C(kA.skinSh));
+    g.save();
+    g.translate(8, -152);
+    g.rotate(-0.07);
+    g.scale(1.4, 1.4);
+    ell(-54, -44, 9, 13, C(kA.skinSh));
+    ell(54, -44, 9, 13, C(kA.skin));
+    form(
+      () => g.roundRect(-52, -106, 104, 112, [52, 52, 46, 46]),
+      C(kA.skin),
+      () => {
+        ell(-48, -40, 38, 76, C(kA.skinSh));
+      }
+    );
+    ell(0, -40, 9.5, 7.5, C(kA.skinSh));
+    g.globalAlpha = 0.34;
+    ell(-30, -30, 12, 6, C('#e0604a'));
+    ell(30, -30, 12, 6, C('#e0604a'));
+    g.globalAlpha = 1;
+
+    // Peaceful closed smiling eyes + gunmetal half-rim glasses + warm smile
+    const ey = -56;
+    limb(-28, ey + 2, -10, ey + 2, 3.4, 3.4, C(INK));
+    limb(10, ey + 2, 28, ey + 2, 3.4, 3.4, C(INK));
+    limb(-30, ey - 17, -8, ey - 20, 4.2, 4.6, C('#7d8594'));
+    limb(30, ey - 17, 8, ey - 20, 4.2, 4.6, C('#7d8594'));
+    g.save();
+    g.strokeStyle = C('#2a303c');
+    g.lineWidth = 2.6;
+    g.beginPath();
+    g.roundRect(-33, ey - 8, 28, 19, 5);
+    g.stroke();
+    g.beginPath();
+    g.roundRect(5, ey - 8, 28, 19, 5);
+    g.stroke();
+    limb(-5, ey - 2, 5, ey - 2, 2.4, 2.4, C('#2a303c'));
+    rr(-34, ey - 9.5, 30, 3.5, 1.5, C('#2a303c'));
+    rr(4, ey - 9.5, 30, 3.5, 1.5, C('#2a303c'));
+    g.restore();
+
+    g.beginPath();
+    g.moveTo(-15, -14);
+    g.quadraticCurveTo(0, -5, 16, -14);
+    g.strokeStyle = C('#5e1f22');
+    g.lineWidth = 3.8;
+    g.lineCap = 'round';
+    g.stroke();
+
+    // Person A hair crown
+    form(
+      () => {
+        curve(
+          [
+            [-53, -72],
+            [-50, -108],
+            [-16, -120],
+            [24, -118],
+            [52, -104],
+            [53, -72],
+            [44, -84],
+            [12, -93],
+            [-28, -91],
+            [-45, -82],
+          ],
+          true
+        );
+      },
+      C(kA.hair),
+      () => {
+        poly(
+          [
+            [-56, -122],
+            [-14, -122],
+            [-22, -70],
+            [-56, -70],
+          ],
+          C(kA.hairSh)
+        );
+      }
+    );
+    rr(-52, -76, 9, 26, 4, C(kA.hairSh));
+    rr(43, -76, 9, 26, 4, C(kA.hair));
+    g.restore();
+    g.restore();
+
+    // 2. Person B (foreground-left, 0.94 stature, matched Style 2 head scale)
+    g.save();
+    g.translate(-26, -HIP + 12);
+    footLeg(-18, 0, 0, C(kB.pantsSh), C(kB.bootSh), -0.02, 0, -10, false, false);
+    footLeg(18, 0, 0, C(kB.pants), C(kB.boot), 0.04, 0, 14, false, false);
+
+    // Full-proportioned black T-shirt back torso
+    form(
+      () =>
+        curve(
+          [
+            [-54, -126],
+            [0, -138],
+            [56, -126],
+            [50, 22],
+            [-48, 22],
+          ],
+          true
+        ),
+      C(kB.coat),
+      () => {
+        poly(
+          [
+            [-58, -140],
+            [-6, -140],
+            [-12, 24],
+            [-58, 24],
+          ],
+          C(kB.coatSh)
+        );
+      }
+    );
+
+    // Person B right arm onto A's outer shoulder (keeps A's chin & collar clear)
+    limb(42, -112, 86, -124, 19, 15, C(kB.coat));
+    at(90, -126, 0.95, () => drawHandShape('open', C(kB.skin), C(kB.skinSh), -0.25));
+    // Person B left arm around A's ribcage
+    limb(-44, -112, -56, -136, 18, 14, C(kB.coatSh));
+
+    // Person B 1.32x Style 2 rear-3/4 head + low bun, left of A's face
+    rr(-18, -152, 32, 24, 6, C(kB.skinSh));
+    g.save();
+    g.translate(-34, -136);
+    g.rotate(0.14);
+    g.scale(1.32, 1.32);
+    // Warm right cheek & ear peeking on right edge (3/4 rear view)
+    ell(44, -44, 14, 24, C(kB.skin));
+    ell(49, -42, 8, 12, C(kB.skinSh));
+    // Full rounded capsule blonde hair crown
+    form(
+      () => g.roundRect(-48, -102, 96, 104, [46, 46, 38, 38]),
+      C(kB.hair),
+      () => {
+        poly(
+          [
+            [-52, -106],
+            [-6, -106],
+            [-12, 6],
+            [-52, 6],
+          ],
+          C(kB.hairSh)
+        );
+      }
+    );
+    // Hair tie + low bun on back-left
+    rr(-42, -56, 12, 26, 5, C(kB.coat));
+    ell(-54, -43, 22, 20, C(kB.hair));
+    ell(-59, -39, 13, 14, C(kB.hairSh));
+    g.restore();
+    g.restore();
+
+    // 3. OVERLAY: Person A sleeves & open hands across B's back
+    g.save();
+    g.translate(26, -HIP);
+    // A's right arm (screen-left) around B's back
+    limb(-50, -120, -94, -76, 20, 16.5, C(kA.coatSh));
+    limb(-94, -76, -62, -68 + pat * 0.4, 16, 14, C(kA.coat));
+    at(-56, -68 + pat * 0.4, 1.05, () => drawHandShape('open', C(kA.skin), C(kA.skinSh), 0.04));
+
+    // A's left arm (screen-right) across B's shoulder blades
+    limb(52, -120, 62, -80, 20, 16.5, C(kA.coat));
+    limb(62, -80, -18, -86 - pat, 16.5, 14, C(kA.coat));
+    at(-24, -86 - pat, 1.05, () => drawHandShape('open', C(kA.skin), C(kA.skinSh), Math.PI - 0.06));
+    g.restore();
+
+    g.restore();
+  });
 }
 
 // ---- Horse + Mounted Rider ----------------------------------------------

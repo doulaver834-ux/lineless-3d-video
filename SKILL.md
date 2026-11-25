@@ -9,6 +9,8 @@ description: 制作通用叙事、历史、商业、科普与人物故事的「�
 
 认可视觉基准（2026-11-24）：`examples/benchmark_1876_3d/`（19.80 秒，`2560×1440 @ 30fps`，包含议会大厅过肩推镜、书房木槌落案、原木指挥部真实三维敞开门洞透视室外营区、高地砂岩悬崖摇臂拉远俯瞰蜿蜒河谷四幕空间）。所有新成片画质、边缘锐度与 2D–3D 融合度不得低于该基准。
 
+**开工前必读 [references/quality-bar.md](references/quality-bar.md)**：用户要求「细致、高质量，不要 demo」。短片同样至少 3 座独立三维场景、每座单独文件 ≥ 650 行、每 4–6 秒换空间或机位、每座场景一件随剧情动画的英雄道具，并按第三节派多个 Subagent 并行精雕。禁止白墙空房间、一字排开的群演、沿用被否决版本的切音和场景代码。
+
 ---
 
 ## 一、画风与视觉统一铁律
@@ -50,6 +52,7 @@ description: 制作通用叙事、历史、商业、科普与人物故事的「�
    - 室内顶棚/屋顶一律设 `castShadow = false` 以保证方向阳光照入室内；门洞与窗洞留出真实三维开口并布置窗外/门外三维远景；室内浮尘半径不超过 `0.007m`（`opacity <= 0.24`）。详见 [references/architecture-and-craft.md](references/architecture-and-craft.md) 与 [references/assets-and-pipeline.md](references/assets-and-pipeline.md)。
 
 4. **角色表演、机位约束与拟音母带**
+   - 当代题材（公司、科技园区、董事会）用 `exec_founder` / `modern_*` / `board_*` 服装 kit，工牌主题色用 `setStyle2Accent()` 设置；双人拥抱一律用 `createHugActor(kitA, kitB)`，详见 [references/architecture-and-craft.md](references/architecture-and-craft.md) 第 5 节。
    - 人物手部坐标、马背手部偏移（骑手举高道具需设 `hand[1]` 在 `-440 ~ -490` 区间）及 `perform()` 表演动词见 [references/architecture-and-craft.md](references/architecture-and-craft.md)。
    - 侧面坐骑运镜约束：水平机位保持在行进法线 `±25°` 以内，通过垂直摇臂升降与纵深推拉展现空间感。
    - 涉及机械原理或建筑构造时，可穿插 4–8 秒四色调（Four-tone）等距剖面拆解镜头。
@@ -60,6 +63,8 @@ description: 制作通用叙事、历史、商业、科普与人物故事的「�
 
 ---
 
-## 三、10 分钟长片多 Subagent 并行规范
+## 三、多 Subagent 并行规范（短片与长片都适用）
 
-制作 8–12 分钟长片时，先单线程锁死全片配音与 `words.json` 并切分为 8–10 个章节（每章 60–75 秒），再以每批 4–6 个 Subagent 并行编写新增场景与各章运镜代码，统一跑全片静帧抽检修正遮挡后，分章增量渲染并用 `ffmpeg -c copy` 无损拼接。
+**短片（30–90 秒）**：主线程锁定剧本、配音、`words.json`、镜头表和每座场景的世界坐标契约后，每座场景派 1 个场景建筑师 Subagent（独占一个 `src/setXxx3d.ts`），角色骨骼和服装另派 1 个（独占 `style2Rig.js` + `linelessCast.ts`）；任务书模板与要求见 [references/quality-bar.md](references/quality-bar.md) 第五节。
+
+**长片（8–12 分钟）**：制作 8–12 分钟长片时，先单线程锁死全片配音与 `words.json` 并切分为 8–10 个章节（每章 60–75 秒），再以每批 4–6 个 Subagent 并行编写新增场景与各章运镜代码，统一跑全片静帧抽检修正遮挡后，分章增量渲染并用 `ffmpeg -c copy` 无损拼接。

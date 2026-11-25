@@ -73,3 +73,22 @@ When explaining *how* a mechanism, weapon, ship hull, or building works internal
   2. Sunlit front bevel (`0.86×`),
   3. Shaded side plane (`0.64×`),
   4. Deep interior section cut (`#2b2329` or muted cross-section accent) with clean callout leader lines and `>= 26px` labels.
+
+---
+
+## 5. Modern / Contemporary Cast Kits, Two-Person Hug & Brand Accent
+
+Ported from the approved 2026-11-24 contemporary short (4 sets, 12 shots) and made brand-neutral.
+
+- **Contemporary kits** (`KIT` in `style2Rig.js`): `exec_founder` (zip work jacket, swept silver hair, half-rim glasses, white-sole shoes), `modern_fleece`, `modern_vest`, `modern_red_hoodie`, `modern_tee`, `modern_woman_jacket`, `modern_hoodie`, `modern_navy_jacket`, `modern_it_vest`, `modern_tee_woman`, and boardroom suits `board_chair`, `board_suit`, `board_woman`.
+  - Kit flags: `trim: 'zip_jacket' | 'vest' | 'hoodie' | 'tee' | 'suit'`, `badge` (lanyard ID), `modernBelt`, `silverBuckle`, `whiteSole`, `glasses`, `halfRim`, `hairStyle: 'swept_silver' | 'long'`.
+- **Contemporary props**: `'day1_badge'`, `'pc_box'`, `'resignation_folder'`, `'protest_sign'` (plus existing `laptop_open`, `phone_rec`).
+- **Brand accent**: lanyards, badges, `pc_box`, `day1_badge` and `protest_sign` use one accent colour. Call `setStyle2Accent('#76b900')` (optionally with a shade) once per project or inside a `withStyle2Context` block. Default is neutral blue `#3f8fd0`.
+- **Two-person hug** — never fake it by shrinking one head onto the other's chest:
+  ```ts
+  import {createHugActor} from './linelessCast';
+  const hug = createHugActor('exec_founder', 'modern_tee_woman'); // kitA: right-rear, eyes closed; kitB: foreground-left, rear 3/4 with low bun
+  hug.update(t, camera, {visible: true, pos: [-0.1, 0, 0.7]});
+  ```
+  Both heads share Style 2 scale (~1.32–1.40×); colours come from the two kits. Best framed as a medium shot with shallow `LensBlur`, then crane up and away.
+- Contemporary crowds: scatter 8–20 standing actors across real Z depths and stair/mezzanine heights (`4–6m` behind the hero), mixing kits; never a single evenly spaced row.
