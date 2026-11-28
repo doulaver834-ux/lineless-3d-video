@@ -19,14 +19,30 @@ if not audio or not audio.exists():
     sys.exit("no narration audio: put it in assets/audio/ or pass it as the second argument")
 model, lang = a.model, a.language
 
-exe = shutil.which("mlx_whisper") or "/Library/Frameworks/Python.framework/Versions/3.14/bin/mlx_whisper"
-if not os.path.exists(exe):
-    sys.exit("mlx_whisper not found (pip install mlx-whisper)")
+mlx_exe = shutil.which("mlx_whisper") or "/Library/Frameworks/Python.framework/Versions/3.14/bin/mlx_whisper"
+whisper_exe = shutil.which("whisper")
+
 with tempfile.TemporaryDirectory() as td:
-    subprocess.run([exe, str(audio), "--model", model, "--word-timestamps", "True", "--output-format", "json",
-                    "--output-dir", td, "--output-name", "w", "--language", lang, "--verbose", "False"],
-                   check=True, stdout=subprocess.DEVNULL)
-    d = json.loads((pathlib.Path(td) / "w.json").read_text())
+    if os.path.exists(mlx_exe):
+        subprocess.run([mlx_exe, str(audio), "--model", model, "--word-timestamps", "True", "--output-format", "json",
+                        "--output-dir", td, "--output-name", "w", "--language", lang, "--verbose", "False"],
+                       check=True, stdout=subprocess.DEVNULL)
+        d = json.loads((pathlib.Path(td) / "w.json").read_text())
+    elif whisper_exe:
+        oa_model = "turbo" if "turbo" in model else "base"
+        subprocess.run([whisper_exe, str(audio), "--model", oa_model, "--word_timestamps", "True",
+                        "--output_format", "json", "--output_dir", td, "--language", lang, "--verbose", "False"],
+                       check=True, stdout=subprocess.DEVNULL)
+        json_files = sorted(pathlib.Path(td).glob("*.json"))
+        if not json_files:
+            sys.exit("whisper did not produce a JSON transcript")
+        d = json.loads(json_files[0].read_text())
+    else:
+        sys.exit(
+            "No Whisper CLI found. Install one of:\n"
+            "  - Apple Silicon Mac: pip install mlx-whisper\n"
+            "  - Linux / Windows / Intel Mac: pip install openai-whisper"
+        )
 
 words, lines = [], []
 for seg in d["segments"]:

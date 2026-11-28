@@ -13,15 +13,35 @@ import shutil
 import subprocess
 import sys
 
+import json
+
 SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+SKILL_DIR = SCRIPT_DIR.parent
 TEMPLATE_DIR = SCRIPT_DIR / "template"
 
-KNOWN_NODE_MODULES = [
-    pathlib.Path("/Volumes/T7/项目/the-rope-coldopen-3d/v5-sound-and-action/node_modules"),
-]
-KNOWN_ASSET_CACHES = [
-    pathlib.Path("/Volumes/T7/项目/YouTube/lineless-3d-general-test/public/assets"),
-]
+
+def _load_local_cfg() -> dict:
+    cfg_path = SKILL_DIR / "local.json"
+    if cfg_path.exists():
+        try:
+            return json.loads(cfg_path.read_text())
+        except Exception:
+            return {}
+    return {}
+
+
+def _candidate_paths(env_key: str, local_key: str) -> list[pathlib.Path]:
+    out: list[pathlib.Path] = []
+    if os.environ.get(env_key):
+        out.append(pathlib.Path(os.environ[env_key]).expanduser())
+    local_val = _load_local_cfg().get(local_key)
+    if local_val:
+        out.append(pathlib.Path(local_val).expanduser())
+    return out
+
+
+KNOWN_NODE_MODULES = _candidate_paths("LINELESS_3D_NODE_MODULES", "shared_node_modules")
+KNOWN_ASSET_CACHES = _candidate_paths("LINELESS_3D_ASSETS", "asset_cache")
 
 
 def copy_if_missing(src: pathlib.Path, dst: pathlib.Path, force: bool = False):

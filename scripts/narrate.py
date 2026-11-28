@@ -25,7 +25,8 @@ Google Cloud project, first found wins: --gcp-project, env GEMINI_TTS_PROJECT, "
 import argparse, base64, concurrent.futures as cf, json, os, pathlib, re, shutil, subprocess, sys, time, urllib.error
 import threading, urllib.request, wave
 
-MODEL = "gemini-3.8-flash-tts"
+MODEL_VERTEX = "gemini-3.8-flash-tts"
+MODEL_AISTUDIO = "gemini-2.5-flash-preview-tts"
 VOICE = "Fenrir"
 STYLE_PROFILE = "compact-shortform-v3"
 STYLE = (pathlib.Path(__file__).resolve().parent.parent / "references" / "narration-compact-v3.txt").read_text().strip()
@@ -39,10 +40,12 @@ ap.add_argument("--texts", help="folder of ordered .txt chapters instead of prod
 ap.add_argument("--wpm", default="native",
                 help="'native' (default: keep Google's pace) or a number to time-stretch every chapter to that pace")
 ap.add_argument("--voice", default=VOICE)
+ap.add_argument("--model", help="override TTS model (default: gemini-3.8-flash-tts on Vertex, gemini-2.5-flash-preview-tts on AI Studio)")
 ap.add_argument("--style", help="file with a custom style prompt ({wpm} is filled in)")
 ap.add_argument("--gap", type=float, default=0.6, help="silence between chapters in narration.wav (s)")
 ap.add_argument("--workers", type=int, default=2)
-ap.add_argument("--gcp-project", help="Google Cloud project (default: env / local.json / gcloud config)")
+ap.add_argument("--gcp-project", help="Google Cloud Vertex AI project (default: env GEMINI_TTS_PROJECT / local.json / gcloud config)")
+ap.add_argument("--api-key", help="Google AI Studio Gemini API key (or set GEMINI_API_KEY env var — no gcloud required)")
 ap.add_argument("--prepare-only", action="store_true")
 ap.add_argument("--status", action="store_true")
 ap.add_argument("--join-only", action="store_true")
@@ -54,18 +57,40 @@ except ValueError:
     sys.exit("--wpm takes 'native' or a number")
 
 
-def gcp_project():
+def resolve_backend():
+    """Return (backend, credential_or_project, default_model).
+    Prefers explicit --api-key / GEMINI_API_KEY when no explicit --gcp-project is given,
+    otherwise uses Vertex AI via --gcp-project / GEMINI_TTS_PROJECT / local.json / gcloud.
+    """
+    api_key = a.api_key or os.environ.get("GEMINI_API_KEY")
+    if a.api_key:
+        return ("aistudio", a.api_key, a.model or MODEL_AISTUDIO)
+    # Check explicit Vertex AI settings first (preserves local.json / GEMINI_TTS_PROJECT / --gcp-project)
     if a.gcp_project:
-        return a.gcp_project
+        return ("vertex", a.gcp_project, a.model or MODEL_VERTEX)
     if os.environ.get("GEMINI_TTS_PROJECT"):
-        return os.environ["GEMINI_TTS_PROJECT"]
+        return ("vertex", os.environ["GEMINI_TTS_PROJECT"], a.model or MODEL_VERTEX)
     local = pathlib.Path(__file__).resolve().parent.parent / "local.json"
-    if local.exists() and json.loads(local.read_text()).get("gcp_project"):
-        return json.loads(local.read_text())["gcp_project"]
-    r = subprocess.run(["gcloud", "config", "get-value", "project"], capture_output=True, text=True, timeout=30)
-    if r.returncode or not r.stdout.strip() or r.stdout.strip() == "(unset)":
-        sys.exit("no Google Cloud project: pass --gcp-project, set GEMINI_TTS_PROJECT, or gcloud config set project")
-    return r.stdout.strip()
+    if local.exists():
+        try:
+            proj = json.loads(local.read_text()).get("gcp_project")
+            if proj:
+                return ("vertex", proj, a.model or MODEL_VERTEX)
+        except Exception:
+            pass
+    # Fall back to Google AI Studio GEMINI_API_KEY if present (easiest for public users!)
+    if api_key:
+        return ("aistudio", api_key, a.model or MODEL_AISTUDIO)
+    # Last fallback: gcloud active project
+    if shutil.which("gcloud"):
+        r = subprocess.run(["gcloud", "config", "get-value", "project"], capture_output=True, text=True, timeout=30)
+        if r.returncode == 0 and r.stdout.strip() and r.stdout.strip() != "(unset)":
+            return ("vertex", r.stdout.strip(), a.model or MODEL_VERTEX)
+    sys.exit(
+        "No Gemini TTS credentials found. Choose one:\n"
+        "  1. Easiest (Google AI Studio): export GEMINI_API_KEY='your-key' (or pass --api-key)\n"
+        "  2. Vertex AI (gcloud): gcloud auth login && pass --gcp-project <id> or set GEMINI_TTS_PROJECT"
+    )
 
 
 def pace(t):
@@ -159,7 +184,9 @@ def prepare():
             (T / f"{name}.txt").write_text(piece + "\n")
             sections.append(dict(id=sid, name=name, title=title, text=piece, words=count_words(piece),
                                  status="pending"))
-    m = dict(source=str(src), gcp_project=gcp_project(), model=MODEL, voice=a.voice, language="en-US",
+    backend, cred_or_proj, model_name = resolve_backend()
+    m = dict(source=str(src), backend=backend, gcp_project=(cred_or_proj if backend == "vertex" else "aistudio"),
+             model=model_name, voice=a.voice, language="en-US",
              target_wpm=a.wpm, style=style, style_profile="custom" if a.style else STYLE_PROFILE,
              gap=a.gap, created=time.strftime("%Y-%m-%d %H:%M"), sections=sections)
     save(m)
@@ -174,13 +201,26 @@ def token():
 
 
 def synth(m, s, tok):
-    url = (f"https://aiplatform.googleapis.com/v1/projects/{m['gcp_project']}/locations/global/publishers/google/"
-           f"models/{m['model']}:generateContent")
-    body = {"contents": [{"role": "user", "parts": [{"text": s["text"], "speechMetadata": {"style": m["style"]}}]}],
-            "generationConfig": {"responseModalities": ["AUDIO"],
-                                 "speechConfig": {"voiceConfig": {"voice": m["voice"]}}}}
-    req = urllib.request.Request(url, data=json.dumps(body).encode(),
-                                 headers={"Authorization": "Bearer " + tok, "Content-Type": "application/json"})
+    backend = m.get("backend", "vertex")
+    if backend == "aistudio":
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{m['model']}:generateContent"
+        prompt_text = f"Read aloud in this exact voice direction ({m['style']}):\n\n{s['text']}"
+        body = {
+            "contents": [{"parts": [{"text": prompt_text}]}],
+            "generationConfig": {
+                "responseModalities": ["AUDIO"],
+                "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": m["voice"]}}},
+            },
+        }
+        headers = {"x-goog-api-key": tok, "Content-Type": "application/json"}
+    else:
+        url = (f"https://aiplatform.googleapis.com/v1/projects/{m['gcp_project']}/locations/global/publishers/google/"
+               f"models/{m['model']}:generateContent")
+        body = {"contents": [{"role": "user", "parts": [{"text": s["text"], "speechMetadata": {"style": m["style"]}}]}],
+                "generationConfig": {"responseModalities": ["AUDIO"],
+                                     "speechConfig": {"voiceConfig": {"voice": m["voice"]}}}}
+        headers = {"Authorization": "Bearer " + tok, "Content-Type": "application/json"}
+    req = urllib.request.Request(url, data=json.dumps(body).encode(), headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=120) as r:
             res = json.load(r)
@@ -242,7 +282,10 @@ def generate(m):
     todo = [s for s in m["sections"] if s["status"] == "pending"]
     if not todo:
         return
-    tok = token()
+    if m.get("backend") == "aistudio":
+        tok = a.api_key or os.environ.get("GEMINI_API_KEY") or sys.exit("GEMINI_API_KEY or --api-key required for AI Studio TTS")
+    else:
+        tok = token()
 
     def run(s):
         s["status"] = "submitted"; save(m)
