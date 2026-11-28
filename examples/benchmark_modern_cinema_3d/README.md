@@ -10,4 +10,4 @@ This reference production validates `lineless-3d-video` on modern corporate / te
   3. **Three-Story Timber Lattice Atrium** — soaring cedar diagrid skylights, volumetric sun shafts, tiered staircases packed with Z-staggered cheering engineers, proportion-matched two-person embrace (`createHugActor`), and a 6m 3D crane ascent
   4. **Slate-Teal Hardware Provisioning Lab** — contrasting palette, retro beige 486 CRT cart vs. animated spinning 25-fin 3D flagship GPU hero prop
 - **12 camera setups** with optical `LensBlur` on OTS close-ups and crisp deep focus (`aperture: 0`) on grand crane shots
-- **Audio**: Gemini TTS (`Fenrir`, native pace) + `mlx-whisper` word timestamps + action-locked Foley SFX mastered to `-14 LUFS`
+- **Audio**: Narration WAV + Whisper word timestamps (`words.json`) + action-locked Foley SFX mastered to `-14 LUFS`

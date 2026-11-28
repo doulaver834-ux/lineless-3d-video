@@ -32,14 +32,13 @@ description: 制作通用叙事、历史、商业、科普与人物故事的「�
 
 ## 二、标准制作流程
 
-1. **分镜化顺稿与旁白配音（TTS）**
-   - 配音前先按 [剧本分镜化指南](references/script.md) 检查文稿（去连续数字报表、超 6 秒抽象推演转具象小剧场或剖面拆解、关键转折留 `[air 0.8]` 气口）：
+1. **分镜化顺稿与旁白时间轴对齐**
+   - 先按 [剧本分镜化指南](references/script.md) 检查文稿（去连续数字报表、超 6 秒抽象推演转具象小剧场或剖面拆解、关键转折留 `[air 0.8]` 气口）：
      ```bash
      python3 "$K/director/script_lint.py" <project>/production/script.md --strict --export <project>/production/texts_clean
      ```
-   - 默认旁白配置见 [references/tts.md](references/tts.md)（`gemini-3.8-flash-tts`、音色 `Fenrir`、`compact-shortform-v3`，保留原生语速）：
+   - 将自备旁白音频（真人录音或任意外部语音工具导出的 WAV/MP3）放入 `<project>/assets/audio/narration.wav`，再用 `words.py` 生成逐词时间戳 `words.json`：
      ```bash
-     python3 "$K/narrate.py" <project> --texts <project>/production/texts_clean
      python3 "$K/words.py" <project> <project>/assets/audio/narration.wav
      ```
    - 如剧本标有 `[air N]` 停顿气口，用 `python3 "$K/director/air.py"` 精准撑开音频与 `words.json`。
@@ -68,6 +67,6 @@ description: 制作通用叙事、历史、商业、科普与人物故事的「�
 
 ## 三、多 Subagent 并行规范（短片与长片都适用）
 
-**短片（30–90 秒）**：主线程锁定剧本、配音、`words.json`、镜头表和每座场景的世界坐标契约后，每座场景派 1 个场景建筑师 Subagent（独占一个 `src/setXxx3d.ts`），角色骨骼和服装另派 1 个（独占 `style2Rig.js` + `linelessCast.ts`）；任务书模板与要求见 [references/quality-bar.md](references/quality-bar.md) 第五节。
+**短片（30–90 秒）**：主线程锁定剧本、旁白音频、`words.json`、镜头表和每座场景的世界坐标契约后，每座场景派 1 个场景建筑师 Subagent（独占一个 `src/setXxx3d.ts`），角色骨骼和服装另派 1 个（独占 `style2Rig.js` + `linelessCast.ts`）；任务书模板与要求见 [references/quality-bar.md](references/quality-bar.md) 第五节。
 
-**长片（8–12 分钟）**：制作 8–12 分钟长片时，先单线程锁死全片配音与 `words.json` 并切分为 8–10 个章节（每章 60–75 秒），再以每批 4–6 个 Subagent 并行编写新增场景与各章运镜代码，统一跑全片静帧抽检修正遮挡后，分章增量渲染并用 `ffmpeg -c copy` 无损拼接。
+**长片（8–12 分钟）**：制作 8–12 分钟长片时，先单线程锁死全片旁白音频与 `words.json` 并切分为 8–10 个章节（每章 60–75 秒），再以每批 4–6 个 Subagent 并行编写新增场景与各章运镜代码，统一跑全片静帧抽检修正遮挡后，分章增量渲染并用 `ffmpeg -c copy` 无损拼接。
